@@ -1,15 +1,35 @@
+<!--
+    Angular GTM events
+    This has been replaced by the ember gtm service
+-->
+
 <a href="<%= your_account_url({ protocol: 'https' }) %>"
    class="to-account-page"
    data-gtm-event="Checkout Success,Continue to your account page,"
    data-gtm-delayed="true">Continue to your account page »</a>
 
+<!--
+    Backend beacon composition
+    GTM needs to dynamic beacons based on data passed through the dataLayer
+-->
+
 <% @customer_subscription.extras.each do |cs_extra| %>
 <img src="<%= beacon_url_for :extra, {:extra => cs_extra.fetch_extra.id, :quantity => cs_extra.quantity} %>" alt="">
 <% end %>
 
+<!--
+    Backend beacon composition
+    GTM needs to support dynamic beacon rending based on arbitrary vars passed through dataLayer
+-->
+
 <% if @render_cj_beacon %>
 <iframe height="1" width="1" frameborder="0" scrolling="no" src="https://www.emjcd.com/tags/c?containerTagId=773&CID=1523786&OID=<%= customer_last_order_id %>&TYPE=353245&ITEM1=<%= @razor_plan_id %>&AMT1=<%= order_total_raw %>&QTY1=1" name="Conversion tag"></iframe>
 <% end %>
+
+<!--
+    Dynamic beacon script composition
+    GTM need to support variables in embedded script that draw from data passed through the dataLayer
+-->
 
 <script type="text/javascript">
   // https://github.com/dollarshaveclub/rails-site/blob/fe06b64cc262b17b2a6b20759c8442dda9916626/main-site/app/helpers/account_helper.rb#L441
