@@ -1,0 +1,153 @@
+<a href="<%= your_account_url({ protocol: 'https' }) %>"
+   class="to-account-page"
+   data-gtm-event="Checkout Success,Continue to your account page,"
+   data-gtm-delayed="true">Continue to your account page »</a>
+
+<% @customer_subscription.extras.each do |cs_extra| %>
+<img src="<%= beacon_url_for :extra, {:extra => cs_extra.fetch_extra.id, :quantity => cs_extra.quantity} %>" alt="">
+<% end %>
+
+<% if @render_cj_beacon %>
+<iframe height="1" width="1" frameborder="0" scrolling="no" src="https://www.emjcd.com/tags/c?containerTagId=773&CID=1523786&OID=<%= customer_last_order_id %>&TYPE=353245&ITEM1=<%= @razor_plan_id %>&AMT1=<%= order_total_raw %>&QTY1=1" name="Conversion tag"></iframe>
+<% end %>
+
+<script type="text/javascript">
+  // https://github.com/dollarshaveclub/rails-site/blob/fe06b64cc262b17b2a6b20759c8442dda9916626/main-site/app/helpers/account_helper.rb#L441
+  try {
+    DscBeacon = {
+      orderId:              first_subscription_order_id,
+      total:                first_subscription_order_total,
+      productId:            first_subscription_product.id,
+      productSku:           first_subscription_product.sku,
+      productPrice:         first_subscription_product.price,
+      productName:          first_subscription_product.name,
+      productShippingPrice: first_subscription_product.shipping_prices.first.price,
+      extras:               beacon_data_for_checkout_extras
+    };
+  } catch (e) {
+  }
+</script>
+
+<script>
+  (function () {
+    var po = document.createElement('script');
+    po.async = true;
+    po.src = '//d.audienceiq.com/r/dd/id/L21rdC80NC9jaWQvMjYzODA3MTEvdC8wL2NhdC8yNjM4MDczMw/oid/<%= customer_last_order_id %>/oval/<%= order_total_raw %>';
+    var s = document.getElementsByTagName('script')[0];
+    s.parentNode.insertBefore(po, s);
+  })();
+</script>
+
+<script type="text/javascript">
+  try {
+    // ---> Convertro ID
+    jQuery(function($){
+      var callback = function(id) {
+        $.ajax({
+          url: '<%= update_convertro_path(format: :json) %>',
+          data: {
+            convertro_id: id
+          },
+          type: 'post'
+        });
+      };
+      (function () {
+        var getCode = function (cb) {
+          var wait = 100;
+          var checker = function () {
+            if (window.$CVO && $CVO.sid) {
+              cb($CVO.sid);
+            }
+            else {
+              setTimeout(checker, wait *= 1.1);
+            }
+          }
+          checker();
+        };
+        getCode(function (code) {
+          callback(code);
+        });
+      })();
+    });
+    // ---> /Convertro ID
+  } catch (e) {}
+</script>
+
+<script type="text/javascript">
+  var _frnd = {
+    site: "<%= APP_CONFIG['friendbuy']['accountId'] %>",
+    order: {
+      // id: 'ORDER_ID', REPLACE WITH YOUR ORDER ID
+      // amount: '0.00' REPLACE WITH YOUR ORDER AMOUNT
+      id: "<%= current_customer.get_initial_order.id %>",
+      amount: "<%= current_customer.get_initial_order.total.to_s %>"
+    },
+    customer: {
+      //id: 'CUSTOMER_ID' REPLACE WITH YOUR CUSTOMER ID
+      id: "<%= current_customer.obfuscated_id %>",
+      email: "<%= current_customer.email %>"
+    },
+    parameters: {
+      ref_code: "<%= current_customer.referral_code %>",
+      cust_id: "<%= current_customer.obfuscated_id %>"
+    }
+  };
+  (function(d, l, s) {
+    var a, b = d.getElementsByTagName(s)[0];
+    a = d.createElement(s);a.type = 'text/javascript';a.async = true;
+    a.src = l.protocol + '//djnf6e5yyirys.cloudfront.net/js/frndby.js';
+    b.parentNode.insertBefore(a, b);
+  })(document, location, 'script');
+</script>
+
+
+
+<script type="text/javascript">
+  (function(beacon_id, total, addons, order_id, order_type){
+    var has_extra = function(sku) {
+      try {
+        var found = false;
+        $.each(DscBeacon.extras, function(i, extra) {
+          if (extra.sku == sku) { found = true; }
+        });
+        return found;
+      } catch (e) {
+        return false;
+      }
+    };
+    var has_wipe = has_extra('OWC-40C-2');
+    var has_butter = has_extra('ESB-6Z-1');
+    if (has_wipe && has_butter) {
+      addons = 3;
+    } else if (has_butter) {
+      addons = 2;
+    } else if (has_wipe) {
+      addons = 1;
+    } else {
+      addons = 0;
+    }
+    var e=document.createElement("script");
+    e.type='text/javascript';e.async=true;
+    e.src='//pixel.mathtag.com/event/js?mt_id='+beacon_id+'&mt_adid=115369&v1='+total+'&v2='+addons+'&v3=&s1='+order_id+'&s2='+order_type+'&s3=';
+    var n=document.getElementsByTagName('script')[0];
+    n.parentNode.insertBefore(e,n);
+  })(340819, 1, null, 1, 'test');
+</script>
+
+<% order ||= customer_last_order %>
+<% content_for :gtm_data_layer do %>
+
+<script>
+  try {
+    dataLayer.push({
+      'transactionId': '<%= order.obfuscated_id %>', //required.
+      'transactionAffiliation': 'DollarShaveClub',
+      'transactionTotal': '<%= order.total %>', //required.
+      'transactionTax': '<%= order.tax %>',
+      'transactionShipping': '<%= order.shipping_charges %>',
+      'transactionProducts': <%= gtm_products(order) %>
+  });
+  } catch (e) {}
+</script>
+
+<% end %>
