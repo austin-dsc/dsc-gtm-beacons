@@ -16,6 +16,12 @@ and allows the dsc ember application to focus specifically on delivering analyti
 * `cms-beacons.html` - beacon scripts embedded into ^^^ by the cms
 * `ember-gtm.js` - new ember gtm impelementation ( for reference )
 
+## Required Features
+
+* GTM needs to support dynamic pixels based on data passed through the dataLayer
+* GTM needs to support dynamic pixel rending based on arbitrary vars passed through dataLayer
+* GTM need to support variables in embedded script that draw from data passed through the dataLayer
+
 ## Checkout Success Page
 
 ### Vendors
