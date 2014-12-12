@@ -1,0 +1,316 @@
+<!-- Ampush -->
+<script type="text/javascript">
+
+    // ampush checkout success - 'pixel initialized'
+    (function() {
+        window._fbds = window._fbds || {};
+        _fbds.pixelId = 1407354656175829;
+        var fbds = document.createElement('script');
+        fbds.async = true;
+        fbds.src = '//connect.facebook.net/en_US/fbds.js';
+        var s = document.getElementsByTagName('script')[0];
+        s.parentNode.insertBefore(fbds, s);
+    })();
+    window._fbq = window._fbq || [];
+    window._fbq.loaded = true;
+    window._fbq.push(["track", "PixelInitialized", {}]);
+
+
+    // ampush 'confirmation of purchase' tracking pixel
+    (function() {
+        var _fbq = window._fbq || (window._fbq = []);
+        if (!_fbq.loaded) {
+            var fbds = document.createElement('script');
+            fbds.async = true;
+            fbds.src = '//connect.facebook.net/en_US/fbds.js';
+            var s = document.getElementsByTagName('script')[0];
+            s.parentNode.insertBefore(fbds, s);
+            _fbq.loaded = true;
+        }
+    })();
+    window._fbq = window._fbq || [];
+    window._fbq.push(['track', '6012473686353', {'value': parseInt(DscBeacon.total, 10), 'currency':'USD'} ]);
+
+
+    // ampush 'razor plan' tracking pixels
+    //  @param DscBeacon   {object} Purchase data assembled from the backend
+    //  @param productName {string} The name of the chosen razor plan
+    switch( DscBeacon.productName ) {
+
+        case 'Humble Twin':
+            window._fbq.push(['track', '6020881799953', {'value': 3,'currency':'USD'} ]);
+            break;
+
+        case '4x':
+            window._fbq.push(['track', '6020881824153', {'value': 6,'currency':'USD'} ]);
+            break;
+
+        case 'Executive':
+            window._fbq.push(['track', '6020881826153', {'value': 9,'currency':'USD'} ]);
+            break;
+
+        default: break;
+    }
+
+
+    // ampush 'extras' tracking pixels
+    if ( DscBeacon.extras.length ) {
+
+        var has_extra = function(sku) {
+            var found = false;
+            $.each(DscBeacon.extras, function(i, extra) {
+                if (extra.sku == sku) { found = true; }
+            });
+            return found;
+        };
+
+        var extra_qty = function(sku) {
+            var qty = 0;
+            $.each(DscBeacon.extras, function(i, extra) {
+                if (extra.sku == sku) { qty = extra.quantity; }
+            });
+            return qty;
+        };
+
+        // set has extra
+        var has_owc    = has_extra('OWC-40C-2');
+        var has_sb_6oz = has_extra('ESB-6Z-1');
+        var has_ps     = has_extra('MPS-3Z-1');
+
+        // set extra quantities
+        var qty_owc    = extra_qty('OWC-40C-2');
+        var qty_sb_6oz = extra_qty('ESB-6Z-1');
+        var qty_ps     = extra_qty('MPS-3Z-1');
+
+        if ( has_owc ) {
+            window._fbq.push(['track', '6020884546953', {'value': (4 * qty_owc),'currency':'USD'} ]);
+        }
+
+        if ( has_sb_6oz ) {
+            window._fbq.push(['track', '6020884546353', {'value': (8 * qty_sb_6oz),'currency':'USD'} ]);
+        }
+
+        if ( has_ps ) {
+            window._fbq.push(['track', '6020884547353', {'value': (9 * qty_ps),'currency':'USD'} ]);
+        }
+
+    }
+
+</script><!-- end ampush -->
+
+<!-- Pinterest begin -->
+<img height="1" width="1" alt="" src="//ct.pinterest.com/?tid=6SA6mB"/>
+<!-- Pinterest end -->
+
+<!-- convertro -->
+<script type="text/javascript">
+    try {
+        $CVO = window.$CVO || [];
+        $CVO.push([ 'trackEvent', {
+            type: 'sale',
+            id: DscBeacon.orderId,
+            amount: DscBeacon.total
+        }]);
+
+        for (var i = 0; i < DscBeacon.extras.length; i++) {
+            var extra = DscBeacon.extras[i]
+            setTimeout(function (extra) {
+                $CVO.push([ 'trackEvent', {
+                    type: 'sale-' + extra.sku,
+                    id: DscBeacon.orderId + extra.id,
+                    amount: extra.subtotal
+                }]);
+
+            }, 100, extra);
+        }
+
+
+        $CVO.push([ 'trackUser', {
+            id: '<%= current_customer.obfuscated_id if current_customer %>'
+        }]);
+
+
+    } catch (e) {
+    }
+</script>
+<!-- end convertro -->
+
+
+
+<script src='//Dollar-Shave-Club.7eer.net/js/1969/4377/irv2.js' type='text/javascript'></script>
+
+<script type="text/javascript">
+    // required advertiser supplied values
+    irEvent.setOrderId(DscBeacon.orderId);
+
+    // At least one item is necessary.  The parameters are
+    // cat: A category, for example "electronics".  Required
+    // sku: A unique product identifier, or Storage Keeping Unit
+    // amt: The total sale amount for this line item.  Required
+    // qty: The quantity of the line item.  Required.
+    irEvent.addItem("razor", DscBeacon.productName, DscBeacon.total, 1);
+
+    irEvent.fire();
+</script>
+
+
+<!-- Advertiser 'Client Direct-Dollar Shave Club-USD',  Conversion tracking 'DSC Conversion Pixel 6-27-13' - DO NOT MODIFY THIS PIXEL IN ANY WAY -->
+<img src="https://ad.yieldmanager.com/pixel?id=2390423&t=2" width="1" height="1" />
+<!-- End of conversion tag -->.
+
+
+<script type="text/javascript">
+    (function(beacon_id, total, addons, order_id, order_type){
+
+        var has_extra = function(sku) {
+            var found = false;
+            $.each(DscBeacon.extras, function(i, extra) {
+                if (extra.sku == sku) { found = true; }
+            });
+            return found;
+        };
+        var has_wipe = has_extra('OWC-40C-2');
+        var has_butter = has_extra('ESB-6Z-1');
+
+        if (has_wipe && has_butter) {
+            addons = 3;
+        } else if (has_butter) {
+            addons = 2
+        } else if (has_wipe) {
+            addons = 1;
+        } else {
+            addons = 0;
+        }
+
+        var e=document.createElement("script");
+        e.type='text/javascript';e.async=true;
+        e.src='//pixel.mathtag.com/event/js?mt_id='+beacon_id+'&mt_adid=115369&v1='+total+'&v2='+addons+'&v3=&s1='+order_id+'&s2='+order_type+'&s3=';
+        var n=document.getElementsByTagName('script')[0];
+        n.parentNode.insertBefore(e,n);
+    })(338801, DscBeacon.total, null, DscBeacon.orderId, DscBeacon.productName);
+</script>
+
+<script language='JavaScript1.1' src='//pixel.mathtag.com/event/js?mt_id=340819&mt_adid=115369&v1=&v2=&v3=&s1=&s2=&s3='></script>
+
+
+<!-- Google Code for Order Conversion Page -->
+<script type="text/javascript">
+    /* <![CDATA[ */
+    var google_conversion_id = 985134890;
+    var google_conversion_language = "en";
+    var google_conversion_format = "2";
+    var google_conversion_color = "ffffff";
+    var google_conversion_label = "AQYYCObAngMQqu7f1QM";
+    var google_conversion_value = 1.00;
+    var google_remarketing_only = false;
+    /* ]]> */
+</script>
+<script type="text/javascript" src="//www.googleadservices.com/pagead/conversion.js">
+</script>
+<noscript>
+    <div style="display:inline;">
+        <img height="1" width="1" style="border-style:none;" alt="" src="//www.googleadservices.com/pagead/conversion/985134890/?value=1.00&amp;label=AQYYCObAngMQqu7f1QM&amp;guid=ON&amp;script=0"/>
+    </div>
+</noscript>
+
+
+<script type="text/javascript"> if (!window.mstag) mstag = {loadTag : function(){},time : (new Date()).getTime()};</script> <script id="mstag_tops" type="text/javascript" src="//flex.msn.com/mstag/site/c7a8a3db-8259-4765-bfc3-d254daf89a46/mstag.js"></script> <script type="text/javascript"> mstag.loadTag("analytics", {dedup:"1",domainId:"1716653",type:"1",actionid:"237681"})</script> <noscript> <iframe src="//flex.msn.com/mstag/tag/c7a8a3db-8259-4765-bfc3-d254daf89a46/analytics.html?dedup=1&domainId=1716653&type=1&actionid=237681" frameborder="0" scrolling="no" width="1" height="1" style="visibility:hidden;display:none"> </iframe> </noscript>
+
+
+<img height="1" width="1" style="display:none;" alt="" src="https://analytics.twitter.com/i/adsct?txn_id=l4fkt&p_id=Twitter" />
+<img height="1" width="1" style="display:none;" alt="" src="//t.co/i/adsct?txn_id=l4fkt&p_id=Twitter" />
+
+
+<script type="application/javascript" src="https://s.yimg.com/mi/ytc.js"></script>
+<script type="application/javascript">
+    YAHOO.ywa.I13N.fireBeacon(
+            [
+                {
+                    "projectId" : "100029292685",
+                    "coloId" : "SP",
+                    "properties" : {
+                        /*"documentName" : "",*/
+                        "pixelId" : "10755"
+                    }
+                }
+            ]
+    );
+</script>
+
+<img src="//p.liadm.com/p?c=12066"/>
+
+
+<!-- -----The following Coding is for the Advertising.com Web Beacon ---- -->
+<!-- ----------------- DO NOT REMOVE THIS CODING ------------------------ -->
+<img src="https://secure.ace-tag.advertising.com/action/type=114584/bins=1/rich=0/mnum=1516/logs=0/" width="1" height="1" border="0">
+<!-- -----The preceding Coding is for the Advertising.com Web Beacon ---- -->
+<!-- ----------------- DO NOT REMOVE THIS CODING ------------------------ -->
+
+<img src=https://secure.ace-tag.advertising.com/action/type=115906/bins=1/rich=0/Mnum=1516/ width = 1 height= 1 border = 0>
+
+
+
+<script type="text/javascript">
+    window._tfa = window._tfa || [];
+    _tfa.push({notify:"action", name:"subscription_successful"});
+</script>
+<script src="//cdn.taboola.com/libtrc/dollarshaveclub-sc/tfa.js"></script>
+
+<div id="pepperjamnetwork"></div>
+
+<script>
+    (function(){
+
+        var skuMap = function(sku) {
+            switch(sku) {
+                case 'M-DTWIN-1':
+                    return 1677;
+                case 'M-4X-1':
+                    return 1678;
+                case 'M-EXEC-1':
+                    return 1679;
+                default:
+                    return 'unknown';
+            }
+        };
+
+        try {
+            var out = {}, url = "https://t.pepperjamnetwork.com/track?PID=7414&amp;";
+            $.each(DscBeacon.extras, function (i, o) {
+                var j = i + 2;
+                out['ITEM' + j] = o.id;
+                out['QTY' + j] = o.quantity;
+                out['TOTALAMOUNT' + j] = parseFloat(o.subtotal).toFixed(2);
+            });
+            out['ITEM1'] = skuMap(DscBeacon.productSku);
+            out['QTY1'] = 1;
+            out['TOTALAMOUNT1'] = (parseFloat(DscBeacon.productShippingPrice) + parseFloat(DscBeacon.productPrice)).toFixed(2);
+            out['INT'] = 'ITEMIZED';
+            out['OID'] = DscBeacon.orderId;
+            url = url + $.param(out);
+            $('#pepperjamnetwork').append($('<iframe src="'+url+'" width="1" height="1" frameborder="0"></iframe>'));
+        } catch (e) {}
+    })();
+
+</script>
+
+
+
+<img height="1" width="1" style="display:none;" alt="" src="https://analytics.twitter.com/i/adsct?txn_id= l522t&p_id=Twitter" />
+<img height="1" width="1" style="display:none;" alt="" src="//t.co/i/adsct?txn_id= l522t&p_id=Twitter" />
+
+
+
+
+<img height='1' width='1' border='0' src='//www.clickmeter.com/conversion.aspx?id=3E10A482E20044EABA7CC1BE921944DE&val=0.00&param=empty&com=0.00' />
+
+<img height='1' width='1' border='0' src='//www.clickmeter.com/conversion.aspx?id=DAA686DEA8CE42F18C73EAC6E17573EE&val=0.00&param=empty&com=0.00' />
+
+<img height='1' width='1' border='0' src='//www.clickmeter.com/conversion.aspx?id=24A8A0C2B7DB40088AF3CDC12D9F938D&val=0.00&param=empty&com=0.00' />
+
+<img height='1' width='1' border='0' src='//www.clickmeter.com/conversion.aspx?id=7CE250B6E07A47D6B2805E330F51D14A&val=0.00&param=empty&com=0.00' />
+
+<img src="https://sp.analytics.yahoo.com/spp.pl?a=1000920745819&.yp=20695&js=no"/>
+<img src="https://sp.analytics.yahoo.com/spp.pl?a=10001969673532&.yp=20696&js=no"/>
+<img src="https://sp.analytics.yahoo.com/spp.pl?a=10001083119387&.yp=20613&js=no"/>
+<img src="https://sp.analytics.yahoo.com/spp.pl?a=10002105102009&.yp=20697&js=no"/>
