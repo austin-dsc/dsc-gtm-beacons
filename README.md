@@ -10,6 +10,12 @@ Instead of passing data to vendor analytics services directly the dsc-ember-gtm 
 and gtm is then responsible for sending data to the vendor services. This centralizes management of vendor analytics in gtm
 and allows the dsc ember application to focus specifically on delivering analytics payloads to gtm.
 
+## Contents
+
+* `angular-checkout-success.html` -  the existing "flattened" checkout success page
+* `cms-beacons.html` - beacon scripts embedded into ^^^ by the cms
+* `ember-gtm.js` - new ember gtm impelementation ( for reference )
+
 ## Checkout Success Page
 
 ### Vendors
